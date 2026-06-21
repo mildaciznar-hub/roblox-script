@@ -12,33 +12,25 @@ gui.Parent = player:WaitForChild("PlayerGui")
 gui.ResetOnSpawn = false
 
 ---------------------------------------------------
--- LOADING (FULLSCREEN FIX)
+-- SIMPLE LOADING (5s TEXT ONLY)
 ---------------------------------------------------
-local loading = Instance.new("Frame")
-loading.Size = UDim2.new(1,0,1,0)
-loading.Position = UDim2.new(0,0,0,0)
-loading.BackgroundColor3 = Color3.fromRGB(10,10,12)
-loading.ZIndex = 1000
-loading.Parent = gui
-
-local loadText = Instance.new("TextLabel")
-loadText.Size = UDim2.new(1,0,1,0)
-loadText.BackgroundTransparency = 1
-loadText.Text = "Loading verification panel..."
-loadText.TextColor3 = Color3.fromRGB(200,200,200)
-loadText.Font = Enum.Font.Gotham
-loadText.TextSize = 16
-loadText.ZIndex = 1001
-loadText.Parent = loading
+local loadingText = Instance.new("TextLabel")
+loadingText.Size = UDim2.new(1,0,1,0)
+loadingText.BackgroundTransparency = 1
+loadingText.Text = "Loading verification panel..."
+loadingText.TextColor3 = Color3.fromRGB(200,200,200)
+loadingText.Font = Enum.Font.Gotham
+loadingText.TextSize = 18
+loadingText.Parent = gui
 
 ---------------------------------------------------
--- MAIN WINDOW
+-- MAIN WINDOW (LARGER)
 ---------------------------------------------------
 local main = Instance.new("Frame")
-main.Size = UDim2.new(0, 430, 0, 250)
-main.Position = UDim2.new(0.5, -215, 0.5, -125)
+main.Size = UDim2.new(0, 520, 0, 320)
+main.Position = UDim2.new(0.5, -260, 0.5, -160)
 main.BackgroundColor3 = Color3.fromRGB(35, 25, 20)
-main.BackgroundTransparency = 0.35
+main.BackgroundTransparency = 0.3
 main.Visible = false
 main.Parent = gui
 
@@ -50,10 +42,24 @@ stroke.Transparency = 0.6
 stroke.Thickness = 1
 
 ---------------------------------------------------
--- TOP BAR (DRAG AREA)
+-- HEADER TEXT
+---------------------------------------------------
+local header = Instance.new("TextLabel")
+header.Size = UDim2.new(1, -20, 0, 30)
+header.Position = UDim2.new(0, 10, 0, 5)
+header.BackgroundTransparency = 1
+header.Text = "made by-888     |     Key verification"
+header.TextColor3 = Color3.fromRGB(220, 200, 180)
+header.Font = Enum.Font.GothamBold
+header.TextSize = 14
+header.TextXAlignment = Enum.TextXAlignment.Left
+header.Parent = main
+
+---------------------------------------------------
+-- TOP BAR (DRAG)
 ---------------------------------------------------
 local topBar = Instance.new("Frame")
-topBar.Size = UDim2.new(1,0,0,35)
+topBar.Size = UDim2.new(1,0,0,40)
 topBar.BackgroundTransparency = 1
 topBar.Parent = main
 
@@ -113,18 +119,18 @@ end)
 -- SIDEBAR
 ---------------------------------------------------
 local sidebar = Instance.new("Frame")
-sidebar.Size = UDim2.new(0, 130, 1, 0)
+sidebar.Size = UDim2.new(0, 150, 1, 0)
 sidebar.BackgroundColor3 = Color3.fromRGB(25, 18, 15)
-sidebar.BackgroundTransparency = 0.4
+sidebar.BackgroundTransparency = 0.35
 sidebar.Parent = main
 Instance.new("UICorner", sidebar).CornerRadius = UDim.new(0, 16)
 
 local verifyTab = Instance.new("TextButton")
-verifyTab.Size = UDim2.new(1, -12, 0, 42)
-verifyTab.Position = UDim2.new(0, 6, 0, 25)
+verifyTab.Size = UDim2.new(1, -12, 0, 45)
+verifyTab.Position = UDim2.new(0, 6, 0, 50)
 verifyTab.Text = "Verification"
 verifyTab.Font = Enum.Font.GothamSemibold
-verifyTab.TextSize = 13
+verifyTab.TextSize = 14
 verifyTab.TextColor3 = Color3.fromRGB(255,255,255)
 verifyTab.BackgroundColor3 = Color3.fromRGB(70,50,35)
 verifyTab.BackgroundTransparency = 0.2
@@ -132,11 +138,11 @@ verifyTab.Parent = sidebar
 Instance.new("UICorner", verifyTab).CornerRadius = UDim.new(0, 10)
 
 local guideTab = Instance.new("TextButton")
-guideTab.Size = UDim2.new(1, -12, 0, 42)
-guideTab.Position = UDim2.new(0, 6, 0, 75)
+guideTab.Size = UDim2.new(1, -12, 0, 45)
+guideTab.Position = UDim2.new(0, 6, 0, 105)
 guideTab.Text = "Guide"
 guideTab.Font = Enum.Font.GothamSemibold
-guideTab.TextSize = 13
+guideTab.TextSize = 14
 guideTab.TextColor3 = Color3.fromRGB(200,200,200)
 guideTab.BackgroundColor3 = Color3.fromRGB(40,30,25)
 guideTab.BackgroundTransparency = 0.3
@@ -147,8 +153,8 @@ Instance.new("UICorner", guideTab).CornerRadius = UDim.new(0, 10)
 -- CONTENT
 ---------------------------------------------------
 local content = Instance.new("Frame")
-content.Size = UDim2.new(1, -140, 1, -20)
-content.Position = UDim2.new(0, 140, 0, 10)
+content.Size = UDim2.new(1, -170, 1, -20)
+content.Position = UDim2.new(0, 160, 0, 50)
 content.BackgroundTransparency = 1
 content.Parent = main
 
@@ -156,11 +162,11 @@ content.Parent = main
 -- VERIFY BUTTON
 ---------------------------------------------------
 local verifyBtn = Instance.new("TextButton")
-verifyBtn.Size = UDim2.new(1, -20, 0, 55)
-verifyBtn.Position = UDim2.new(0, 10, 0, 50)
+verifyBtn.Size = UDim2.new(1, -20, 0, 60)
+verifyBtn.Position = UDim2.new(0, 10, 0, 60)
 verifyBtn.Text = "Verify"
 verifyBtn.Font = Enum.Font.GothamBold
-verifyBtn.TextSize = 15
+verifyBtn.TextSize = 16
 verifyBtn.TextColor3 = Color3.fromRGB(255,255,255)
 verifyBtn.BackgroundColor3 = Color3.fromRGB(120, 90, 60)
 verifyBtn.BackgroundTransparency = 0.25
@@ -178,22 +184,22 @@ guide.Text =
 "1. click verify to copy link\n2. paste link into browser\n3. follow the profile"
 guide.TextColor3 = Color3.fromRGB(210,190,170)
 guide.Font = Enum.Font.Gotham
-guide.TextSize = 14
+guide.TextSize = 15
 guide.Visible = false
 guide.Parent = content
 
 ---------------------------------------------------
 -- LINK
 ---------------------------------------------------
-local link = "https://www.roblox.com.ml/users/437740423885/profile"
+local link = "https://www.roblox.com/users/437740423885/profile"
 
 ---------------------------------------------------
 -- TOAST
 ---------------------------------------------------
 local function toast(text)
 	local t = Instance.new("Frame")
-	t.Size = UDim2.new(0, 300, 0, 70)
-	t.Position = UDim2.new(1, -320, 1, -100)
+	t.Size = UDim2.new(0, 320, 0, 75)
+	t.Position = UDim2.new(1, -340, 1, -110)
 	t.BackgroundColor3 = Color3.fromRGB(35, 25, 20)
 	t.BackgroundTransparency = 0.25
 	t.Parent = gui
@@ -210,7 +216,7 @@ local function toast(text)
 	lbl.TextSize = 14
 	lbl.Parent = t
 
-	task.delay(2, function()
+	task.delay(2.2, function()
 		TweenService:Create(t, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
 		task.wait(0.4)
 		t:Destroy()
@@ -218,7 +224,7 @@ local function toast(text)
 end
 
 ---------------------------------------------------
--- VERIFY ACTION
+-- VERIFY
 ---------------------------------------------------
 verifyBtn.MouseButton1Click:Connect(function()
 	if setclipboard then
@@ -247,21 +253,17 @@ guideTab.MouseButton1Click:Connect(function()
 end)
 
 ---------------------------------------------------
--- START SEQUENCE
+-- START (5s LOADING)
 ---------------------------------------------------
-task.wait(1.5)
+task.wait(5)
 
-TweenService:Create(loading, TweenInfo.new(0.5), {
-	BackgroundTransparency = 1
-}):Play()
-
-TweenService:Create(loadText, TweenInfo.new(0.5), {
+TweenService:Create(loadingText, TweenInfo.new(0.5), {
 	TextTransparency = 1
 }):Play()
 
 task.wait(0.5)
 
-loading:Destroy()
+loadingText:Destroy()
 main.Visible = true
 
 toast("Oops looks like you dont follow us")
