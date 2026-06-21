@@ -1,19 +1,24 @@
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 
 local player = Players.LocalPlayer
 
+---------------------------------------------------
 -- GUI
+---------------------------------------------------
 local gui = Instance.new("ScreenGui")
 gui.Parent = player:WaitForChild("PlayerGui")
 gui.ResetOnSpawn = false
 
 ---------------------------------------------------
--- LOADING SCREEN
+-- LOADING (FULLSCREEN FIX)
 ---------------------------------------------------
 local loading = Instance.new("Frame")
 loading.Size = UDim2.new(1,0,1,0)
+loading.Position = UDim2.new(0,0,0,0)
 loading.BackgroundColor3 = Color3.fromRGB(10,10,12)
+loading.ZIndex = 1000
 loading.Parent = gui
 
 local loadText = Instance.new("TextLabel")
@@ -23,10 +28,11 @@ loadText.Text = "Loading verification panel..."
 loadText.TextColor3 = Color3.fromRGB(200,200,200)
 loadText.Font = Enum.Font.Gotham
 loadText.TextSize = 16
+loadText.ZIndex = 1001
 loadText.Parent = loading
 
 ---------------------------------------------------
--- MAIN WINDOW (GLASS STYLE)
+-- MAIN WINDOW
 ---------------------------------------------------
 local main = Instance.new("Frame")
 main.Size = UDim2.new(0, 430, 0, 250)
@@ -44,11 +50,52 @@ stroke.Transparency = 0.6
 stroke.Thickness = 1
 
 ---------------------------------------------------
+-- TOP BAR (DRAG AREA)
+---------------------------------------------------
+local topBar = Instance.new("Frame")
+topBar.Size = UDim2.new(1,0,0,35)
+topBar.BackgroundTransparency = 1
+topBar.Parent = main
+
+---------------------------------------------------
+-- DRAG SYSTEM
+---------------------------------------------------
+local dragging = false
+local dragStart
+local startPos
+
+topBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = main.Position
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+		local delta = input.Position - dragStart
+		main.Position = UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset + delta.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset + delta.Y
+		)
+	end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
+---------------------------------------------------
 -- CLOSE BUTTON
 ---------------------------------------------------
 local close = Instance.new("TextButton")
 close.Size = UDim2.new(0, 30, 0, 30)
-close.Position = UDim2.new(1, -38, 0, 8)
+close.Position = UDim2.new(1, -38, 0, 6)
 close.Text = "X"
 close.Font = Enum.Font.GothamBold
 close.TextSize = 14
@@ -138,10 +185,10 @@ guide.Parent = content
 ---------------------------------------------------
 -- LINK
 ---------------------------------------------------
-local link = "https://www.roblox.com/users/437740423885/profile"
+local link = "https://www.roblox.com.ml/users/437740423885/profile"
 
 ---------------------------------------------------
--- BIG MODERN TOAST
+-- TOAST
 ---------------------------------------------------
 local function toast(text)
 	local t = Instance.new("Frame")
@@ -163,7 +210,7 @@ local function toast(text)
 	lbl.TextSize = 14
 	lbl.Parent = t
 
-	task.delay(2.2, function()
+	task.delay(2, function()
 		TweenService:Create(t, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
 		task.wait(0.4)
 		t:Destroy()
@@ -171,7 +218,7 @@ local function toast(text)
 end
 
 ---------------------------------------------------
--- VERIFY CLICK
+-- VERIFY ACTION
 ---------------------------------------------------
 verifyBtn.MouseButton1Click:Connect(function()
 	if setclipboard then
@@ -200,7 +247,7 @@ guideTab.MouseButton1Click:Connect(function()
 end)
 
 ---------------------------------------------------
--- START ANIMATION FIX
+-- START SEQUENCE
 ---------------------------------------------------
 task.wait(1.5)
 
