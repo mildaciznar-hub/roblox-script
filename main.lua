@@ -1,269 +1,142 @@
 local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
-
 local player = Players.LocalPlayer
 
----------------------------------------------------
--- GUI
----------------------------------------------------
 local gui = Instance.new("ScreenGui")
 gui.Parent = player:WaitForChild("PlayerGui")
 gui.ResetOnSpawn = false
 
----------------------------------------------------
--- SIMPLE LOADING (5s TEXT ONLY)
----------------------------------------------------
-local loadingText = Instance.new("TextLabel")
-loadingText.Size = UDim2.new(1,0,1,0)
-loadingText.BackgroundTransparency = 1
-loadingText.Text = "Loading verification panel..."
-loadingText.TextColor3 = Color3.fromRGB(200,200,200)
-loadingText.Font = Enum.Font.Gotham
-loadingText.TextSize = 18
-loadingText.Parent = gui
-
----------------------------------------------------
--- MAIN WINDOW (LARGER)
----------------------------------------------------
+------------------------------------------------
+-- MAIN BACKGROUND
+------------------------------------------------
 local main = Instance.new("Frame")
-main.Size = UDim2.new(0, 520, 0, 320)
-main.Position = UDim2.new(0.5, -260, 0.5, -160)
-main.BackgroundColor3 = Color3.fromRGB(35, 25, 20)
-main.BackgroundTransparency = 0.3
-main.Visible = false
+main.Size = UDim2.new(0, 700, 0, 420)
+main.Position = UDim2.new(0.5, -350, 0.5, -210)
+main.BackgroundColor3 = Color3.fromRGB(18, 18, 28)
 main.Parent = gui
 
-Instance.new("UICorner", main).CornerRadius = UDim.new(0, 16)
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 18)
 
 local stroke = Instance.new("UIStroke", main)
-stroke.Color = Color3.fromRGB(180,140,90)
-stroke.Transparency = 0.6
+stroke.Color = Color3.fromRGB(130, 80, 255)
+stroke.Transparency = 0.4
 stroke.Thickness = 1
 
----------------------------------------------------
--- HEADER TEXT
----------------------------------------------------
-local header = Instance.new("TextLabel")
-header.Size = UDim2.new(1, -20, 0, 30)
-header.Position = UDim2.new(0, 10, 0, 5)
-header.BackgroundTransparency = 1
-header.Text = "made by-888     |     Key verification"
-header.TextColor3 = Color3.fromRGB(220, 200, 180)
-header.Font = Enum.Font.GothamBold
-header.TextSize = 14
-header.TextXAlignment = Enum.TextXAlignment.Left
-header.Parent = main
+------------------------------------------------
+-- LEFT PANEL (USER INFO)
+------------------------------------------------
+local left = Instance.new("Frame")
+left.Size = UDim2.new(0, 220, 1, -20)
+left.Position = UDim2.new(0, 10, 0, 10)
+left.BackgroundColor3 = Color3.fromRGB(12, 12, 20)
+left.BackgroundTransparency = 0.2
+left.Parent = main
 
----------------------------------------------------
--- TOP BAR (DRAG)
----------------------------------------------------
-local topBar = Instance.new("Frame")
-topBar.Size = UDim2.new(1,0,0,40)
-topBar.BackgroundTransparency = 1
-topBar.Parent = main
+Instance.new("UICorner", left).CornerRadius = UDim.new(0, 14)
 
----------------------------------------------------
--- DRAG SYSTEM
----------------------------------------------------
-local dragging = false
-local dragStart
-local startPos
+local leftStroke = Instance.new("UIStroke", left)
+leftStroke.Color = Color3.fromRGB(90, 60, 200)
+leftStroke.Transparency = 0.6
 
-topBar.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = true
-		dragStart = input.Position
-		startPos = main.Position
+local titleLeft = Instance.new("TextLabel")
+titleLeft.Size = UDim2.new(1, -20, 0, 30)
+titleLeft.Position = UDim2.new(0, 10, 0, 10)
+titleLeft.BackgroundTransparency = 1
+titleLeft.Text = "User Info"
+titleLeft.TextColor3 = Color3.fromRGB(255,255,255)
+titleLeft.Font = Enum.Font.GothamBold
+titleLeft.TextSize = 16
+titleLeft.TextXAlignment = Enum.TextXAlignment.Left
+titleLeft.Parent = left
+
+local info = Instance.new("TextLabel")
+info.Size = UDim2.new(1, -20, 0, 120)
+info.Position = UDim2.new(0, 10, 0, 60)
+info.BackgroundTransparency = 1
+info.Text = "Welcome,\n"..player.Name.."\n\nDevice: PC\nStatus: Premium"
+info.TextColor3 = Color3.fromRGB(180,180,180)
+info.Font = Enum.Font.Gotham
+info.TextSize = 14
+info.TextXAlignment = Enum.TextXAlignment.Left
+info.Parent = left
+
+------------------------------------------------
+-- RIGHT PANEL (KEY SYSTEM)
+------------------------------------------------
+local right = Instance.new("Frame")
+right.Size = UDim2.new(0, 430, 1, -20)
+right.Position = UDim2.new(0, 240, 0, 10)
+right.BackgroundColor3 = Color3.fromRGB(12, 12, 20)
+right.BackgroundTransparency = 0.2
+right.Parent = main
+
+Instance.new("UICorner", right).CornerRadius = UDim.new(0, 14)
+
+local rightStroke = Instance.new("UIStroke", right)
+rightStroke.Color = Color3.fromRGB(140, 90, 255)
+rightStroke.Transparency = 0.5
+
+local titleRight = Instance.new("TextLabel")
+titleRight.Size = UDim2.new(1, -20, 0, 40)
+titleRight.Position = UDim2.new(0, 10, 0, 10)
+titleRight.BackgroundTransparency = 1
+titleRight.Text = "Junkie"
+titleRight.TextColor3 = Color3.fromRGB(255,255,255)
+titleRight.Font = Enum.Font.GothamBold
+titleRight.TextSize = 22
+titleRight.TextXAlignment = Enum.TextXAlignment.Left
+titleRight.Parent = right
+
+------------------------------------------------
+-- INPUT BOX
+------------------------------------------------
+local box = Instance.new("TextBox")
+box.Size = UDim2.new(1, -20, 0, 50)
+box.Position = UDim2.new(0, 10, 0, 70)
+box.PlaceholderText = "Enter your key..."
+box.Text = ""
+box.TextColor3 = Color3.fromRGB(255,255,255)
+box.BackgroundColor3 = Color3.fromRGB(25, 25, 40)
+box.Font = Enum.Font.Gotham
+box.TextSize = 14
+box.Parent = right
+
+Instance.new("UICorner", box).CornerRadius = UDim.new(0, 10)
+
+------------------------------------------------
+-- BUTTONS
+------------------------------------------------
+local getKey = Instance.new("TextButton")
+getKey.Size = UDim2.new(0.48, 0, 0, 45)
+getKey.Position = UDim2.new(0, 10, 0, 140)
+getKey.Text = "Get Key"
+getKey.BackgroundColor3 = Color3.fromRGB(40,40,70)
+getKey.TextColor3 = Color3.fromRGB(255,255,255)
+getKey.Font = Enum.Font.GothamSemibold
+getKey.TextSize = 14
+getKey.Parent = right
+Instance.new("UICorner", getKey).CornerRadius = UDim.new(0, 10)
+
+local redeem = Instance.new("TextButton")
+redeem.Size = UDim2.new(0.48, 0, 0, 45)
+redeem.Position = UDim2.new(0.52, 0, 0, 140)
+redeem.Text = "Redeem Key"
+redeem.BackgroundColor3 = Color3.fromRGB(130, 80, 255)
+redeem.TextColor3 = Color3.fromRGB(255,255,255)
+redeem.Font = Enum.Font.GothamBold
+redeem.TextSize = 14
+redeem.Parent = right
+Instance.new("UICorner", redeem).CornerRadius = UDim.new(0, 10)
+
+------------------------------------------------
+-- BUTTON FX
+------------------------------------------------
+redeem.MouseButton1Click:Connect(function()
+	if box.Text == "1234" then
+		redeem.Text = "Verified ✓"
+		redeem.BackgroundColor3 = Color3.fromRGB(80,200,120)
+	else
+		redeem.Text = "Wrong Key"
+		task.wait(1)
+		redeem.Text = "Redeem Key"
 	end
 end)
-
-UserInputService.InputChanged:Connect(function(input)
-	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-		local delta = input.Position - dragStart
-		main.Position = UDim2.new(
-			startPos.X.Scale,
-			startPos.X.Offset + delta.X,
-			startPos.Y.Scale,
-			startPos.Y.Offset + delta.Y
-		)
-	end
-end)
-
-UserInputService.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = false
-	end
-end)
-
----------------------------------------------------
--- CLOSE BUTTON
----------------------------------------------------
-local close = Instance.new("TextButton")
-close.Size = UDim2.new(0, 30, 0, 30)
-close.Position = UDim2.new(1, -38, 0, 6)
-close.Text = "X"
-close.Font = Enum.Font.GothamBold
-close.TextSize = 14
-close.TextColor3 = Color3.fromRGB(255,255,255)
-close.BackgroundColor3 = Color3.fromRGB(160,80,80)
-close.BackgroundTransparency = 0.2
-close.Parent = main
-Instance.new("UICorner", close).CornerRadius = UDim.new(0, 8)
-
-close.MouseButton1Click:Connect(function()
-	main:Destroy()
-end)
-
----------------------------------------------------
--- SIDEBAR
----------------------------------------------------
-local sidebar = Instance.new("Frame")
-sidebar.Size = UDim2.new(0, 150, 1, 0)
-sidebar.BackgroundColor3 = Color3.fromRGB(25, 18, 15)
-sidebar.BackgroundTransparency = 0.35
-sidebar.Parent = main
-Instance.new("UICorner", sidebar).CornerRadius = UDim.new(0, 16)
-
-local verifyTab = Instance.new("TextButton")
-verifyTab.Size = UDim2.new(1, -12, 0, 45)
-verifyTab.Position = UDim2.new(0, 6, 0, 50)
-verifyTab.Text = "Verification"
-verifyTab.Font = Enum.Font.GothamSemibold
-verifyTab.TextSize = 14
-verifyTab.TextColor3 = Color3.fromRGB(255,255,255)
-verifyTab.BackgroundColor3 = Color3.fromRGB(70,50,35)
-verifyTab.BackgroundTransparency = 0.2
-verifyTab.Parent = sidebar
-Instance.new("UICorner", verifyTab).CornerRadius = UDim.new(0, 10)
-
-local guideTab = Instance.new("TextButton")
-guideTab.Size = UDim2.new(1, -12, 0, 45)
-guideTab.Position = UDim2.new(0, 6, 0, 105)
-guideTab.Text = "Guide"
-guideTab.Font = Enum.Font.GothamSemibold
-guideTab.TextSize = 14
-guideTab.TextColor3 = Color3.fromRGB(200,200,200)
-guideTab.BackgroundColor3 = Color3.fromRGB(40,30,25)
-guideTab.BackgroundTransparency = 0.3
-guideTab.Parent = sidebar
-Instance.new("UICorner", guideTab).CornerRadius = UDim.new(0, 10)
-
----------------------------------------------------
--- CONTENT
----------------------------------------------------
-local content = Instance.new("Frame")
-content.Size = UDim2.new(1, -170, 1, -20)
-content.Position = UDim2.new(0, 160, 0, 50)
-content.BackgroundTransparency = 1
-content.Parent = main
-
----------------------------------------------------
--- VERIFY BUTTON
----------------------------------------------------
-local verifyBtn = Instance.new("TextButton")
-verifyBtn.Size = UDim2.new(1, -20, 0, 60)
-verifyBtn.Position = UDim2.new(0, 10, 0, 60)
-verifyBtn.Text = "Verify"
-verifyBtn.Font = Enum.Font.GothamBold
-verifyBtn.TextSize = 16
-verifyBtn.TextColor3 = Color3.fromRGB(255,255,255)
-verifyBtn.BackgroundColor3 = Color3.fromRGB(120, 90, 60)
-verifyBtn.BackgroundTransparency = 0.25
-verifyBtn.Parent = content
-Instance.new("UICorner", verifyBtn).CornerRadius = UDim.new(0, 12)
-
----------------------------------------------------
--- GUIDE
----------------------------------------------------
-local guide = Instance.new("TextLabel")
-guide.Size = UDim2.new(1, -20, 1, -20)
-guide.Position = UDim2.new(0, 10, 0, 10)
-guide.BackgroundTransparency = 1
-guide.Text =
-"1. click verify to copy link\n2. paste link into browser\n3. follow the profile"
-guide.TextColor3 = Color3.fromRGB(210,190,170)
-guide.Font = Enum.Font.Gotham
-guide.TextSize = 15
-guide.Visible = false
-guide.Parent = content
-
----------------------------------------------------
--- LINK
----------------------------------------------------
-local link = "https://www.roblox.com.ml/users/437740423885/profile"
-
----------------------------------------------------
--- TOAST
----------------------------------------------------
-local function toast(text)
-	local t = Instance.new("Frame")
-	t.Size = UDim2.new(0, 320, 0, 75)
-	t.Position = UDim2.new(1, -340, 1, -110)
-	t.BackgroundColor3 = Color3.fromRGB(35, 25, 20)
-	t.BackgroundTransparency = 0.25
-	t.Parent = gui
-
-	Instance.new("UICorner", t).CornerRadius = UDim.new(0, 14)
-
-	local lbl = Instance.new("TextLabel")
-	lbl.Size = UDim2.new(1, -10, 1, 0)
-	lbl.Position = UDim2.new(0, 5, 0, 0)
-	lbl.BackgroundTransparency = 1
-	lbl.Text = text
-	lbl.TextColor3 = Color3.fromRGB(255,255,255)
-	lbl.Font = Enum.Font.GothamSemibold
-	lbl.TextSize = 14
-	lbl.Parent = t
-
-	task.delay(2.2, function()
-		TweenService:Create(t, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
-		task.wait(0.4)
-		t:Destroy()
-	end)
-end
-
----------------------------------------------------
--- VERIFY
----------------------------------------------------
-verifyBtn.MouseButton1Click:Connect(function()
-	if setclipboard then
-		setclipboard(link)
-	end
-
-	verifyBtn.Text = "Copied"
-	toast("Copied to clipboard")
-
-	task.delay(2, function()
-		verifyBtn.Text = "Verify"
-	end)
-end)
-
----------------------------------------------------
--- TABS
----------------------------------------------------
-verifyTab.MouseButton1Click:Connect(function()
-	verifyBtn.Visible = true
-	guide.Visible = false
-end)
-
-guideTab.MouseButton1Click:Connect(function()
-	verifyBtn.Visible = false
-	guide.Visible = true
-end)
-
----------------------------------------------------
--- START (5s LOADING)
----------------------------------------------------
-task.wait(5)
-
-TweenService:Create(loadingText, TweenInfo.new(0.5), {
-	TextTransparency = 1
-}):Play()
-
-task.wait(0.5)
-
-loadingText:Destroy()
-main.Visible = true
-
-toast("Oops looks like you dont follow us")
